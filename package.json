@@ -1,0 +1,18 @@
+{
+  "name": "hiretalentiq",
+  "version": "1.0.0",
+  "description": "AI-powered talent acquisition platform — monorepo with Python backend and Next.js frontend",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && venv\\Scripts\\python -m uvicorn app.main:app --reload --port 8001",
+    "dev:frontend": "cd frontend && npx next dev",
+    "dev": "npx concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"cyan,green\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "test:app": "python scripts/test_full_app.py",
+    "install:frontend": "cd frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "start:frontend": "cd frontend && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

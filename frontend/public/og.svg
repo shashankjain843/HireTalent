@@ -1,0 +1,68 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="1200" y1="0" x2="0" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#C026D3"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(880 210) rotate(135) scale(520 420)">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="noise" x="0" y="0" width="1200" height="630" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 0.05 0" />
+      <feBlend mode="overlay" in2="SourceGraphic" />
+    </filter>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g filter="url(#noise)">
+    <rect width="1200" height="630" fill="transparent"/>
+  </g>
+
+  <!-- Decorative rings -->
+  <g opacity="0.18">
+    <circle cx="1010" cy="150" r="170" stroke="white" stroke-width="2"/>
+    <circle cx="1010" cy="150" r="110" stroke="white" stroke-width="2"/>
+    <circle cx="1010" cy="150" r="55" stroke="white" stroke-width="2"/>
+  </g>
+
+  <!-- Icon -->
+  <g filter="url(#shadow)">
+    <rect x="96" y="170" width="92" height="92" rx="22" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+    <!-- Sparkle -->
+    <path d="M142 194c3 12 4 13 16 16-12 3-13 4-16 16-3-12-4-13-16-16 12-3 13-4 16-16Z" fill="white" opacity="0.95"/>
+    <path d="M171 215c2 7 2 7 9 9-7 2-7 2-9 9-2-7-2-7-9-9 7-2 7-2 9-9Z" fill="white" opacity="0.9"/>
+  </g>
+
+  <!-- Text -->
+  <g filter="url(#shadow)">
+    <text x="210" y="242" fill="white" font-size="64" font-weight="800" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial">
+      Talent Finder
+    </text>
+    <text x="210" y="296" fill="rgba(255,255,255,0.88)" font-size="30" font-weight="600" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial">
+      AI Candidate Matching
+    </text>
+    <text x="210" y="348" fill="rgba(255,255,255,0.74)" font-size="20" font-weight="500" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial">
+      Conversational screening " Explainable shortlists " Faster hiring
+    </text>
+  </g>
+
+  <!-- Subtle chat bubble watermark -->
+  <g opacity="0.12" transform="translate(880 420)">
+    <path d="M0 56c0-30.9 25.1-56 56-56h144c30.9 0 56 25.1 56 56v78c0 30.9-25.1 56-56 56H112l-50 38c-6.6 5-16 0.3-16-8v-30H56c-30.9 0-56-25.1-56-56V56Z" fill="white"/>
+    <circle cx="78" cy="95" r="10" fill="#4F46E5"/>
+    <circle cx="122" cy="95" r="10" fill="#A21CAF"/>
+    <circle cx="166" cy="95" r="10" fill="#10B981"/>
+  </g>
+</svg>
+

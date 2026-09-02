@@ -1,0 +1,207 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f9fafb;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #090d16;
+    --foreground: #f8fafc;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Enterprise Ultra-Compact Admin Shell ────────────────────────────────── */
+.admin-shell {
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #0f172a;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-frame {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  min-height: 100vh;
+  transition: grid-template-columns 0.15s ease-in-out;
+}
+
+/* Sidebar is ALWAYS a vertical left bar with tight spacing */
+.admin-sidebar {
+  background: #0f172a;
+  color: #f1f5f9;
+  border-right: 1px solid #1e293b;
+  z-index: 30;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.admin-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px;
+  gap: 3px;
+}
+
+.admin-sidebar nav a {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.admin-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #f8fafc;
+}
+
+.admin-topbar {
+  height: 42px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.admin-content {
+  padding: 10px 14px;
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Typography & Ultra-Compact Cards ───────────────────────────────────── */
+.admin-content h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+
+.admin-content h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.admin-content .bg-white {
+  border-radius: 8px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+}
+
+/* ── Tight Responsive Tables ─────────────────────────────────────────────── */
+.table-responsive,
+.admin-content div[class*="overflow-x"] {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+}
+
+.admin-content table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 550px;
+}
+
+.admin-content thead {
+  background: #f8fafc !important;
+}
+
+.admin-content th {
+  font-size: 10.5px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b !important;
+  font-weight: 600 !important;
+  padding: 6px 10px !important;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-content td {
+  font-size: 12px;
+  color: #1e293b;
+  padding: 6px 10px !important;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* ── Compact Form Controls ───────────────────────────────────────────────── */
+.admin-content input,
+.admin-content select,
+.admin-content textarea {
+  border-radius: 5px !important;
+  border: 1px solid #cbd5e1 !important;
+  background: #ffffff;
+  padding: 4px 8px !important;
+  font-size: 12.5px !important;
+  min-height: 32px;
+  transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.admin-content input:focus,
+.admin-content select:focus,
+.admin-content textarea:focus {
+  outline: none;
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.15);
+}
+
+.admin-content button {
+  border-radius: 5px;
+  min-height: 30px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.1s ease;
+}
+
+/* ── Custom Scrollbar ───────────────────────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-color: #334155 transparent;
+  }
+}

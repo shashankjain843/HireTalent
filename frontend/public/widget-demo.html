@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talent Finder Widget Demo</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #f3f4f6;
+        color: #111827;
+      }
+      .container {
+        max-width: 760px;
+        margin: 32px auto 80px;
+        padding: 0 16px;
+      }
+      .card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      }
+      h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+      }
+      p {
+        margin: 0 0 16px;
+        color: #4b5563;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      input,
+      select {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 14px;
+      }
+      input:focus,
+      select:focus {
+        outline: 2px solid #93c5fd;
+        outline-offset: 1px;
+      }
+      .actions {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      button {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .primary {
+        background: #2563eb;
+        color: #fff;
+      }
+      .ghost {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      .status {
+        margin-top: 12px;
+        font-size: 13px;
+        color: #374151;
+        min-height: 18px;
+      }
+      .note {
+        margin-top: 14px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .meta {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 10px;
+        background: #f9fafb;
+        border: 1px solid #e5e7eb;
+        font-size: 13px;
+        color: #374151;
+        white-space: pre-wrap;
+      }
+      .snippet {
+        margin-top: 12px;
+      }
+      textarea {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
+        min-height: 130px;
+        resize: vertical;
+        background: #f9fafb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <h1>Widget Demo Page</h1>
+        <p>
+          Fill in your widget credentials and click <strong>Load widget</strong>.
+          A chat launcher will appear in the page corner.
+        </p>
+
+        <div class="grid">
+          <div>
+            <label for="bot-id">Bot ID</label>
+            <input id="bot-id" placeholder="Paste bot_id from widget config" />
+          </div>
+          <div>
+            <label for="embed-token">Embed token</label>
+            <input
+              id="embed-token"
+              placeholder="Paste token from rotate-token response"
+            />
+          </div>
+          <div>
+            <label for="tenant-slug">Tenant slug (optional)</label>
+            <input id="tenant-slug" placeholder="e.g. acme" />
+          </div>
+          <div>
+            <label for="api-base">API base URL</label>
+            <input id="api-base" value="http://localhost:3000" />
+          </div>
+          <div>
+            <label for="position">Launcher position</label>
+            <select id="position">
+              <option value="bottom-right" selected>bottom-right</option>
+              <option value="bottom-left">bottom-left</option>
+            </select>
+          </div>
+          <div>
+            <label for="title">Widget title</label>
+            <input id="title" value="Talent Finder" />
+          </div>
+          <div>
+            <label for="primary-color">Primary color</label>
+            <input id="primary-color" value="#2563eb" />
+          </div>
+          <div>
+            <label for="width">Widget width</label>
+            <input id="width" value="380" />
+          </div>
+          <div>
+            <label for="height">Widget height</label>
+            <input id="height" value="620" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="ghost" id="prefill-btn" type="button">Prefill from config</button>
+          <button class="primary" id="load-btn" type="button">Load widget</button>
+          <button class="ghost" id="snippet-btn" type="button">Generate snippet</button>
+          <button class="ghost" id="copy-btn" type="button">Copy snippet</button>
+          <button class="ghost" id="reload-btn" type="button">Reload page</button>
+        </div>
+        <div class="status" id="status"></div>
+        <div class="meta" id="meta">No config loaded yet.</div>
+        <div class="snippet">
+          <label for="snippet-output">Embed snippet</label>
+          <textarea
+            id="snippet-output"
+            readonly
+            placeholder="Click 'Generate snippet' after filling values."
+          ></textarea>
+        </div>
+        <div class="note">
+          This page expects Next.js frontend at <code>localhost:3000</code> and backend at
+          <code>localhost:8000</code> as configured in the app.
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const botIdInput = document.getElementById("bot-id");
+      const embedTokenInput = document.getElementById("embed-token");
+      const tenantSlugInput = document.getElementById("tenant-slug");
+      const apiBaseInput = document.getElementById("api-base");
+      const positionInput = document.getElementById("position");
+      const titleInput = document.getElementById("title");
+      const primaryColorInput = document.getElementById("primary-color");
+      const widthInput = document.getElementById("width");
+      const heightInput = document.getElementById("height");
+      const prefillBtn = document.getElementById("prefill-btn");
+      const loadBtn = document.getElementById("load-btn");
+      const snippetBtn = document.getElementById("snippet-btn");
+      const copyBtn = document.getElementById("copy-btn");
+      const reloadBtn = document.getElementById("reload-btn");
+      const statusNode = document.getElementById("status");
+      const metaNode = document.getElementById("meta");
+      const snippetOutput = document.getElementById("snippet-output");
+
+      function setStatus(message, isError) {
+        statusNode.textContent = message || "";
+        statusNode.style.color = isError ? "#b91c1c" : "#065f46";
+      }
+
+      function setMeta(config) {
+        if (!config) {
+          metaNode.textContent = "No config loaded yet.";
+          return;
+        }
+
+        const domains = Array.isArray(config.allowed_domains)
+          ? config.allowed_domains.join(", ") || "(none)"
+          : "(none)";
+
+        metaNode.textContent =
+          "Loaded config\n" +
+          "bot_id: " + (config.bot_id || "(missing)") + "\n" +
+          "name: " + (config.name || "(missing)") + "\n" +
+          "active token last4: " + (config.active_token_last4 || "(unknown)") + "\n" +
+          "allowed domains: " + domains;
+      }
+
+      function buildSnippet() {
+        const botId = botIdInput.value.trim();
+        const embedToken = embedTokenInput.value.trim();
+        const tenantSlug = tenantSlugInput.value.trim();
+        const apiBase = apiBaseInput.value.trim() || "http://localhost:3000";
+        const position = positionInput.value || "bottom-right";
+        const title = titleInput.value.trim() || "Talent Finder";
+        const primaryColor = primaryColorInput.value.trim() || "#2563eb";
+        const width = widthInput.value.trim() || "380";
+        const height = heightInput.value.trim() || "620";
+
+        const scriptSrc = new URL("/widget.v1.js", apiBase).toString();
+
+        return [
+          "<script",
+          '  src="' + scriptSrc + '"',
+          '  data-bot-id="' + botId + '"',
+          '  data-embed-token="' + embedToken + '"',
+          '  data-tenant-slug="' + tenantSlug + '"',
+          '  data-api-base="' + apiBase + '"',
+          '  data-widget-path="/widget"',
+          '  data-primary-color="' + primaryColor + '"',
+          '  data-position="' + position + '"',
+          '  data-title="' + title + '"',
+          '  data-width="' + width + '"',
+          '  data-height="' + height + '"',
+          "><\\/script>",
+        ].join("\n");
+      }
+
+      async function prefillFromConfig() {
+        const apiBase = apiBaseInput.value.trim() || "http://localhost:3000";
+        const candidates = [apiBase];
+        if (apiBase.includes(":3000")) {
+          candidates.push(apiBase.replace(":3000", ":8000"));
+        }
+
+        setStatus("Fetching widget config...");
+
+        for (const base of candidates) {
+          try {
+            const configUrl = new URL("/api/widget/admin/config", base);
+            const response = await fetch(configUrl.toString());
+            if (!response.ok) {
+              throw new Error("Config request failed with status " + response.status);
+            }
+
+            const config = await response.json();
+            if (config.bot_id) {
+              botIdInput.value = config.bot_id;
+            }
+            if (config.launcher_position) {
+              positionInput.value = config.launcher_position;
+            }
+            if (config.name) {
+              titleInput.value = config.name;
+            }
+            if (config.primary_color) {
+              primaryColorInput.value = config.primary_color;
+            }
+
+            setMeta(config);
+            setStatus(
+              "Widget config loaded from " +
+                base +
+                ". Paste an embed token, then load widget."
+            );
+            return;
+          } catch (error) {
+            // Try next candidate base URL.
+          }
+        }
+
+        setMeta(null);
+        setStatus(
+          "Could not fetch widget config from :3000 or :8000. Start backend (port 8000) and retry.",
+          true
+        );
+      }
+
+      function loadWidget() {
+        const botId = botIdInput.value.trim();
+        const embedToken = embedTokenInput.value.trim();
+        const tenantSlug = tenantSlugInput.value.trim();
+        const apiBase = apiBaseInput.value.trim() || window.location.origin;
+        const position = positionInput.value;
+        const title = titleInput.value.trim() || "Talent Finder";
+        const primaryColor = primaryColorInput.value.trim() || "#2563eb";
+        const width = widthInput.value.trim() || "380";
+        const height = heightInput.value.trim() || "620";
+
+        if (!botId || !embedToken) {
+          setStatus("Bot ID and embed token are required.", true);
+          return;
+        }
+
+        if (window.__talentFinderWidgetLoaded) {
+          setStatus("Widget already loaded. Click 'Reload page' to test again.", true);
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "/widget.v1.js";
+        script.dataset.botId = botId;
+        script.dataset.embedToken = embedToken;
+        script.dataset.tenantSlug = tenantSlug;
+        script.dataset.apiBase = apiBase;
+        script.dataset.widgetPath = "/widget";
+        script.dataset.position = position;
+        script.dataset.primaryColor = primaryColor;
+        script.dataset.title = title;
+        script.dataset.width = width;
+        script.dataset.height = height;
+        script.onload = function () {
+          setStatus("Widget loaded. Use the launcher button to open chat.");
+        };
+        script.onerror = function () {
+          setStatus("Failed to load widget.v1.js script.", true);
+        };
+
+        document.body.appendChild(script);
+      }
+
+      async function copySnippet() {
+        const snippet = snippetOutput.value.trim();
+        if (!snippet) {
+          setStatus("Generate snippet first.", true);
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(snippet);
+          setStatus("Snippet copied to clipboard.");
+        } catch (error) {
+          setStatus("Clipboard copy failed. Copy manually from the text box.", true);
+        }
+      }
+
+      loadBtn.addEventListener("click", loadWidget);
+      prefillBtn.addEventListener("click", function () {
+        void prefillFromConfig();
+      });
+      snippetBtn.addEventListener("click", function () {
+        snippetOutput.value = buildSnippet();
+        setStatus("Embed snippet generated from current values.");
+      });
+      copyBtn.addEventListener("click", function () {
+        void copySnippet();
+      });
+      reloadBtn.addEventListener("click", function () {
+        window.location.reload();
+      });
+
+      void prefillFromConfig();
+    </script>
+  </body>
+</html>

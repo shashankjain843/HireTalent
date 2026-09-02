@@ -1,0 +1,83 @@
+# ===========================
+# Python (backend)
+# ===========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+venv/
+.venv/
+env/
+backend/venv/
+backend/.venv/
+.pytest_cache/
+backend/.pytest_cache/
+
+# Local storage & data
+backend/storage/
+storage/
+*.log
+backend/*.log
+temp_*
+
+# ===========================
+# Node / Frontend
+# ===========================
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+.next/
+out/
+
+# ===========================
+# Environment Files (Protected)
+# ===========================
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+backend/.env
+backend/.env.*
+frontend/.env
+frontend/.env.local
+frontend/.env.*
+!.env.example
+!backend/.env.example
+
+# ===========================
+# Database files
+# ===========================
+*.db
+*.sqlite
+*.sqlite3
+coverage/
+
+# ===========================
+# System & IDE
+# ===========================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.vercel
